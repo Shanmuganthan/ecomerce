@@ -27,7 +27,7 @@ const data = [
           },  {
             icon: 'simple-icon-settings',
             label: 'menu.brand',
-            to: '/user/login',
+            to: '/app/dashboards/brands',
             newWindow: false,
           },
           {

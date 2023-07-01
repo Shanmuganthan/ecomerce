@@ -19,6 +19,11 @@ const ProductCategory = React.lazy(() =>
   import(/* webpackChunkName: "product-tegory" */ './productCategory')
 );
 
+
+const Brands = React.lazy(() =>
+  import(/* webpackChunkName: "product-tegory" */ './Brands')
+);
+
 const Dashboards = ({ match }) => (
   <Suspense fallback={<div className="loading" />}>
     <Switch>
@@ -42,6 +47,10 @@ const Dashboards = ({ match }) => (
       <Route
         path={`${match.url}/product-category`}
         render={(props) => <ProductCategory {...props} />}
+      />
+          <Route
+        path={`${match.url}/brands`}
+        render={(props) => <Brands {...props} />}
       />
       {/* 
       <ProtectedRoute

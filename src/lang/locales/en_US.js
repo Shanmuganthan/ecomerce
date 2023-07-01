@@ -152,6 +152,7 @@ module.exports = {
    'menu.config' : 'Config',
    'menu.master' : 'Master',
    'menu.brand' : 'Brand',
+   'menu.brands' : 'Brand',
    'menu.category' : 'Category',
    'menu.product-category' : 'Product Category',
    'menu.sub-category' : 'Sub Category',
