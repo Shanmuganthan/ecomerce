@@ -9,6 +9,10 @@ export const postProductCategory = (data) => {
     return Service.post('product-category',data)
 }
 
+export const getLov = () => {
+    return Service.get('product-category/list/getLov')
+}
+
 
 export const putProductCategory = (id,data) => {
     return Service.put(`/product-category/${id}`,data)

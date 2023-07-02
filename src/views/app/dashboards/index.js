@@ -21,7 +21,11 @@ const ProductCategory = React.lazy(() =>
 
 
 const Brands = React.lazy(() =>
-  import(/* webpackChunkName: "product-tegory" */ './Brands')
+  import(/* webpackChunkName: "brand" */ './Brands')
+);
+
+const Category = React.lazy(() =>
+  import(/* webpackChunkName: "category" */ './Category')
 );
 
 const Dashboards = ({ match }) => (
@@ -51,6 +55,10 @@ const Dashboards = ({ match }) => (
           <Route
         path={`${match.url}/brands`}
         render={(props) => <Brands {...props} />}
+      />
+      <Route
+        path={`${match.url}/category`}
+        render={(props) => <Category {...props} />}
       />
       {/* 
       <ProtectedRoute

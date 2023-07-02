@@ -33,7 +33,7 @@ const data = [
           {
             icon: 'simple-icon-settings',
             label: 'menu.category',
-            to: '/user/login',
+            to: '/app/dashboards/category',
             newWindow: false,
           },
           {

@@ -2,7 +2,6 @@ import  axios from 'axios';
 import { NotificationManager } from 'components/common/react-notifications';
 
 const API_URL = process.env.REACT_APP_API_URL;
-console.log(API_URL)
 const Service = axios.create({
     baseURL: API_URL,
     headers: {
