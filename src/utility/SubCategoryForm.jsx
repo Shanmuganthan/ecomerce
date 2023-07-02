@@ -4,10 +4,10 @@ import { Field  , Form} from 'formik';
 import { FormGroup } from 'reactstrap';
 import { IMAGE_URL } from 'constants/defaultValues';
 import { FormikReactSelect } from 'containers/form-validations/FormikFields';
-import { getLov } from 'services/productCategory';
+import { getLov } from 'services/Category';
 
 
-const CategoryForm = ({setFieldValue , operation , touched ,values,errors , setFieldTouched}) => {
+const SubCategoryForm = ({setFieldValue , operation , touched ,values,errors , setFieldTouched}) => {
   const dropzone = useRef();
   const [productCategory , setProductCategory] = useState(()=>[]);
   
@@ -34,7 +34,7 @@ const CategoryForm = ({setFieldValue , operation , touched ,values,errors , setF
         
         
         {operation !== 'V' && <FormGroup className="error-l-75 ">
-          <DropzoneExample type="category" maxFileSize={1} ref={dropzone} setFieldValue={setFieldValue} />
+          <DropzoneExample type="sub-category" maxFileSize={1} ref={dropzone} setFieldValue={setFieldValue} />
           {errors.image && touched.image && (
                       <div className="invalid-feedback d-block">
                         {errors.image}
@@ -54,7 +54,7 @@ const CategoryForm = ({setFieldValue , operation , touched ,values,errors , setF
         </FormGroup>
 
         <FormGroup className="error-l-75">
-        <div>Product Category</div>
+        <div >Category</div>
         <FormikReactSelect
                         name="parentId"
                         id="parentId"
@@ -65,7 +65,7 @@ const CategoryForm = ({setFieldValue , operation , touched ,values,errors , setF
                       />
                        {errors.parentId && touched.parentId && (
                       <div className="invalid-feedback d-block">
-                       Product Category is required!
+                        Category is required!
                       </div>
                     )}
                       </FormGroup>
@@ -74,4 +74,4 @@ const CategoryForm = ({setFieldValue , operation , touched ,values,errors , setF
     </>
   );
 };
-export default CategoryForm;
+export default SubCategoryForm;

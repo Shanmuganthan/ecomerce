@@ -1,7 +1,7 @@
 import Service from "services"
 
 
-const type = 'category'
+const type = 'sub-category'
 export const getData = (query) => {
     return Service.get(`${type}` ,   {params : {...query}} )
 }

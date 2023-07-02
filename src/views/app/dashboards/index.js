@@ -16,7 +16,7 @@ const EcommerceDefault = React.lazy(() =>
 );
 
 const ProductCategory = React.lazy(() =>
-  import(/* webpackChunkName: "product-tegory" */ './productCategory')
+  import(/* webpackChunkName: "product-category" */ './productCategory')
 );
 
 
@@ -26,6 +26,11 @@ const Brands = React.lazy(() =>
 
 const Category = React.lazy(() =>
   import(/* webpackChunkName: "category" */ './Category')
+);
+
+
+const SubCategory = React.lazy(() =>
+  import(/* webpackChunkName: "sub-category" */ './SubCategory')
 );
 
 const Dashboards = ({ match }) => (
@@ -60,28 +65,11 @@ const Dashboards = ({ match }) => (
         path={`${match.url}/category`}
         render={(props) => <Category {...props} />}
       />
-      {/* 
-      <ProtectedRoute
-        path={`${match.url}/default`}
-        component={DashboardDefault}
-        roles={[UserRole.Admin]}
+      <Route
+        path={`${match.url}/sub-category`}
+        render={(props) => <SubCategory {...props} />}
       />
-      <ProtectedRoute
-        path={`${match.url}/content`}
-        component={ContentDefault}
-        roles={[UserRole.Admin]}
-      />
-      <ProtectedRoute
-        path={`${match.url}/ecommerce`}
-        component={EcommerceDefault}
-        roles={[UserRole.Editor]}
-      />
-      <ProtectedRoute
-        path={`${match.url}/analytics`}
-        component={AnalyticsDefault}
-        roles={[UserRole.Editor]}
-      />
-      */}
+    
 
       <Redirect to="/error" />
     </Switch>

@@ -39,7 +39,7 @@ const data = [
           {
             icon: 'simple-icon-settings',
             label: 'menu.sub-category',
-            to: '/user/login',
+            to: '/app/dashboards/sub-category',
             newWindow: false,
           },
           {
