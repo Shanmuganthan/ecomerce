@@ -35,6 +35,9 @@ const SubCategory = React.lazy(() =>
 const TechnicalSpecification = React.lazy(() =>
   import(/* webpackChunkName: "tech-spec" */ './TechnicalSpecification')
 );
+const ColorSpecification = React.lazy(() =>
+  import(/* webpackChunkName: "color-spec" */ './ColorSpecification')
+);
 
 const Dashboards = ({ match }) => (
   <Suspense fallback={<div className="loading" />}>
@@ -75,6 +78,10 @@ const Dashboards = ({ match }) => (
       <Route
         path={`${match.url}/technical-specification`}
         render={(props) => <TechnicalSpecification {...props} />}
+      />
+      <Route
+        path={`${match.url}/color-specification`}
+        render={(props) => <ColorSpecification {...props} />}
       />
     
 

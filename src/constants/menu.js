@@ -51,7 +51,7 @@ const data = [
           {
             icon: 'simple-icon-settings',
             label: 'menu.colors-specification',
-            to: '/user/login',
+            to: '/app/dashboards/color-specification',
             newWindow: false,
           },
         

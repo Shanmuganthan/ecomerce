@@ -157,7 +157,8 @@ module.exports = {
    'menu.product-category' : 'Product Category',
    'menu.sub-category' : 'Sub Category',
    'menu.technical-specification' : 'Technical Specification',
-   'menu.colors-specification' : 'Colors',
+   'menu.colors-specification' : 'Color Specification',
+   'menu.color-specification' : 'Color Specification',
 
 
   /* 04.Dashboards */
