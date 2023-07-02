@@ -154,7 +154,7 @@ const gotoPage = (p) => {
     <>
       <Row>
         <Colxx xxs="12">
-          <Breadcrumb heading="menu.product-category" match={match} />
+          <Breadcrumb heading="menu.technical-specification" match={match} />
           <Separator className="mb-5" />
         </Colxx>
       </Row>
