@@ -19,6 +19,7 @@ import { ProtectedRoute } from './helpers/authHelper';
 const ViewApp = React.lazy(() =>
   import(/* webpackChunkName: "views-app" */ './views/app')
 );
+
 const ViewUser = React.lazy(() =>
   import(/* webpackChunkName: "views-user" */ './views/user')
 );
@@ -78,6 +79,7 @@ const App = ({ locale  ,appLoaded   }) => {
                   component={ViewApp}
                   roles={[UserRole.Admin, UserRole.Editor]}
                 />
+              
                 <Route
                   path="/user"
                   render={(props) => <ViewUser {...props} />}

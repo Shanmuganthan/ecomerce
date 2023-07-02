@@ -58,6 +58,13 @@ const data = [
         ],
       },
     ]
-  }   
+  },
+  {
+    id: 'products',
+    icon: 'iconsminds-shop-4',
+    label: 'menu.products',
+    to: `${adminRoot}/product/default`,
+   
+  },   
 ];
 export default data;

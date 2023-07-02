@@ -159,6 +159,7 @@ module.exports = {
    'menu.technical-specification' : 'Technical Specification',
    'menu.colors-specification' : 'Color Specification',
    'menu.color-specification' : 'Color Specification',
+   'menu.products' : 'Products',
 
 
   /* 04.Dashboards */
