@@ -32,6 +32,9 @@ const Category = React.lazy(() =>
 const SubCategory = React.lazy(() =>
   import(/* webpackChunkName: "sub-category" */ './SubCategory')
 );
+const TechnicalSpecification = React.lazy(() =>
+  import(/* webpackChunkName: "tech-spec" */ './TechnicalSpecification')
+);
 
 const Dashboards = ({ match }) => (
   <Suspense fallback={<div className="loading" />}>
@@ -68,6 +71,10 @@ const Dashboards = ({ match }) => (
       <Route
         path={`${match.url}/sub-category`}
         render={(props) => <SubCategory {...props} />}
+      />
+      <Route
+        path={`${match.url}/technical-specification`}
+        render={(props) => <TechnicalSpecification {...props} />}
       />
     
 

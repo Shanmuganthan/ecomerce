@@ -45,7 +45,7 @@ const data = [
           {
             icon: 'simple-icon-settings',
             label: 'menu.technical-specification',
-            to: '/user/login',
+            to: '/app/dashboards/technical-specification',
             newWindow: false,
           },
           {
