@@ -8,17 +8,7 @@ import AppLayout from 'layout/AppLayout';
 const Dashboards = React.lazy(() =>
   import(/* webpackChunkName: "dashboards" */ './dashboards')
 );
-const Pages = React.lazy(() =>
-  import(/* webpackChunkName: "pages" */ './pages')
-);
-const Applications = React.lazy(() =>
-  import(/* webpackChunkName: "applications" */ './applications')
-);
-const Ui = React.lazy(() => import(/* webpackChunkName: "ui" */ './ui'));
-const Menu = React.lazy(() => import(/* webpackChunkName: "menu" */ './menu'));
-const BlankPage = React.lazy(() =>
-  import(/* webpackChunkName: "blank-page" */ './blank-page')
-);
+
 const ProductApp = React.lazy(() =>
   import(/* webpackChunkName: "products" */ './products')
 );
@@ -40,32 +30,6 @@ const App = ({ match }) => {
             <Route
               path={`${match.url}/product`}
               render={(props) => <ProductApp {...props} />}
-            />
-            
-            <Route
-              path={`${match.url}/applications`}
-              render={(props) => <Applications {...props} />}
-            />
-            {/* <ProtectedRoute
-                    path={`${match.url}/applications`}
-                    component={Applications}
-                    roles={[UserRole.Admin]}
-            /> */}
-            <Route
-              path={`${match.url}/pages`}
-              render={(props) => <Pages {...props} />}
-            />
-            <Route
-              path={`${match.url}/ui`}
-              render={(props) => <Ui {...props} />}
-            />
-            <Route
-              path={`${match.url}/menu`}
-              render={(props) => <Menu {...props} />}
-            />
-            <Route
-              path={`${match.url}/blank-page`}
-              render={(props) => <BlankPage {...props} />}
             />
             <Redirect to="/error" />
           </Switch>

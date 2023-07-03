@@ -17,7 +17,7 @@ import {
   logoutUser,
   changeLocale,
 } from 'redux/actions';
-
+import { getCurrentUser } from 'helpers/Utils';
 import TopnavDarkSwitch from './Topnav.DarkSwitch';
 
 const TopNav = ({
@@ -134,7 +134,7 @@ const TopNav = ({
         <div className="user d-inline-block">
           <UncontrolledDropdown className="dropdown-menu-right">
             <DropdownToggle className="p-0" color="empty">
-              <span className="name mr-1">Sarah Kortney</span>
+              <span className="name mr-1">{getCurrentUser().name}</span>
               <span>
                 <img alt="Profile" src="/assets/img/profiles/l-1.jpg" />
               </span>

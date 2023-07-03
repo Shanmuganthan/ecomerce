@@ -1,7 +1,7 @@
 import Service from "services"
 
 
-const type = 'brands'
+const type = 'products'
 export const getData = (query) => {
     return Service.get(`${type}` ,   {params : {...query}} )
 }
@@ -19,7 +19,6 @@ export const patchData = (id) => {
     return Service.patch(`/${type}/${id}`)
 }
 
-
 export const getLov = () => {
-    return Service.get(`${type}/list/getLov`  )
+    return Service.get(`${type}/list/getLov`)
 }

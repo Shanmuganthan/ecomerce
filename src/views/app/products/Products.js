@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Colxx, Separator } from 'components/common/CustomBootstrap';
 import Breadcrumb from 'containers/navs/Breadcrumb';
-import { Row } from 'reactstrap';
+import {  Row } from 'reactstrap';
+import { NotificationManager } from 'components/common/react-notifications';
+import { getData } from 'services/Products';
+import DataTablePagination from 'components/DatatablePagination';
+import { patchData } from 'services/Brands';
+import AlertModal from 'utility/AlertModal';
+
 
 
 // const sort = {
@@ -9,122 +16,81 @@ import { Row } from 'reactstrap';
 //   "-1" : 'sort-desc',
 // }
 const Products = ({ match }) => {
-//   const [data, setData] = useState([]);
-//   const [operations, setOperations] = useState(()=>'');
-//   const [selectedItem, setSelectedItem] = useState(()=>{});
-//   const [loading, setLoading] = useState(()=>true);
-//   const formikRef = useRef();
-//   const [initialValues,setInitialValue] = useState(() => ({
-//     image: '',
-//     name: '',
-//     active: true,
-//   }));
-//   const [modalOpen, setModalOpen] = useState(() => false);
-//   const [alertOpen, setAlertOpen] = useState(() => false);
-//   const [pageCount, setPageCount] = useState(0);
-//   const [tableOptions ,setTableOptions]  = useState(()=>({
-//     search : '',
-//     page : 0,
-//      sort : '_id',
-//      direction : 1,
-//      getCount : true,
-//   }))
+  const [data, setData] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(() => {});
+  const [loading, setLoading] = useState(() => true);
 
+  const [alertOpen, setAlertOpen] = useState(() => false);
+  const [pageCount, setPageCount] = useState(0);
+  const [tableOptions, setTableOptions] = useState(() => ({
+    search: '',
+    page: 0,
+    sort: '_id',
+    direction: 1,
+    getCount: true,
+  }));
 
-//   const search = (e) =>{
-//     tableOptions.search = e.target.value;
-//     setTableOptions(tableOptions)
-//  }
+  const search = (e) => {
+    tableOptions.search = e.target.value;
+    setTableOptions(tableOptions);
+  };
 
-//   const toggleModal = (slug) => {
-//     setOperations(slug);
-//     setModalOpen((prevState) => !prevState);
-//   };
+  const toggleAlert = (item) => {
+    setSelectedItem(item);
+    setAlertOpen((prevState) => !prevState);
+  };
 
-//   const toggleAlert = (item) => {
-//     setSelectedItem(item);
-//     setAlertOpen((prevState) => !prevState);
-//   };
+  const get = async () => {
+    setLoading(true);
+    let res = await getData(tableOptions);
+    res = res.data;
+    if (res.status) {
+      if (tableOptions.getCount) {
+        setPageCount(() => res.count);
+      }
+      setData(() => res.data);
+    } else {
+      NotificationManager.error(res.message, 'Error');
+    }
+    setLoading(false);
+  };
 
-//   const saveData = () => {
-//     if (formikRef.current) {
-//       formikRef.current.submitForm();
-//     }
-//   };
+  useEffect(async () => {
+    await get();
+    tableOptions.getCount = false;
+    setTableOptions(tableOptions);
+  }, []);
 
-//   const get = async () => {
-//     setLoading(true);
-//     let res = await getProductCategory(tableOptions);
-//     res = res.data;
-//     if (res.status) {
-//       if(tableOptions.getCount){
-//         setPageCount(() => res.count);  
-//       }
-//       setData(() => res.data);
-      
-//     } else {
-//       NotificationManager.error(res.message, 'Error');
-//     }
-//     setLoading(false);
-//   };
+  const deleteProduct = async () => {
+    await patchData(selectedItem.id);
+    NotificationManager.success(
+      'Porduct has been deleted successfuly!',
+      'Success!'
+    );
+    get();
+    toggleAlert('');
+  };
 
-//   useEffect(async () => {
-//     await get();
-//     tableOptions.getCount = false;
-//     setTableOptions(tableOptions)
-//   }, []);
+  const triggerSearch = () => {
+    tableOptions.getCount = true;
+    setTableOptions(tableOptions);
+    get();
+  };
 
-  // const onSubmit = async (values , {resetForm}) => {
-  //   setLoading(true);
-  //   if(operations === 'A'){
-  //   await postProductCategory(values)
-  //   NotificationManager.success('New Porduct Category has been added!','Success!')
-  //   }else{
-  //     const {id} = selectedItem;
-  //     await putProductCategory(id,values)
-  //   NotificationManager.success('Porduct Category has been updated successfuly!','Success!')
+  // const sorting = (column) => {
+  //   tableOptions.getCount = false;
+  //   if (tableOptions.sort === column) {
+  //     tableOptions.direction = tableOptions.direction === -1 ? 1 : -1;
   //   }
-  //   get()
-  //   toggleModal();
-  //   resetForm(initialValues)
-  //   setLoading(false);
-  //  }
-
-  //  const editAndViewCategory = (slug , item) =>{
-  //   setInitialValue(item);
-  //   setSelectedItem(item);
-  //   setOperations(slug);
-  //   setModalOpen((prevState) => !prevState);
-  //  }
-
-  //  const deleteProduct = async() => {
-  //   await patchProductCategory(selectedItem.id)
-  //   NotificationManager.success('Porduct Category has been deleted successfuly!','Success!')
+  //   tableOptions.sort = column;
+  //   setTableOptions(tableOptions);
   //   get();
-  //   toggleAlert('');
-  //  }
-   
-//  const triggerSearch = () =>{
-//   tableOptions.getCount = true;
-//   setTableOptions(tableOptions);
-//   get();
-// }
-
-// const sorting = (column) =>{
-//   tableOptions.getCount = false;
-//   if(tableOptions.sort === column){
-//     tableOptions.direction = tableOptions.direction === -1 ? 1 : -1 ;
-//   }
-//   tableOptions.sort = column;
-//   setTableOptions(tableOptions)
-//   get();
-// }
-// const gotoPage = (p) => {
-//   tableOptions.page = p;
-//   setTableOptions(tableOptions);
-//   get();
-// }
-
+  // };
+  const gotoPage = (p) => {
+    tableOptions.page = p;
+    setTableOptions(tableOptions);
+    get();
+  };
 
   return (
     <>
@@ -135,14 +101,79 @@ const Products = ({ match }) => {
         </Colxx>
       </Row>
       <Row>
-   
-       {/* {loading && <div className='loading'/>} */}
+        {loading && <div className="loading" />}
 
         <Colxx lg="12" xl="12">
-           <p>Under Maintance</p>
-          </Colxx>
+          <Row className="mb-4 col-md-12">
+            <div className=" search-container col-md-8 pr-0">
+              <div className="search">
+                <input
+                  name="searchKeyword"
+                  onChange={search}
+                  id="searchKeyword"
+                  placeholder="Search"
+                  type="text"
+                  className="form-control"
+                />
+                <span
+                  role="button"
+                  tabIndex="0"
+                  className="search-icon"
+                  onKeyDown={triggerSearch}
+                  onClick={triggerSearch}
+                >
+                  <i className="simple-icon-magnifier" />
+                </span>
+              </div>
+            </div>
+            <div className="text-zero top-right-button-container col-md-4  pr-0 ">
+              <Link
+                to="/app/product/create"
+                color="primary"
+                size="lg"
+                className="top-right-button float-right"
+              >
+                Add New Product
+              </Link>
+            </div>
           </Row>
-          
+        </Colxx>
+      </Row>
+
+      <Row>
+        <Colxx md="12" className="mb-12">
+          <div className="card">
+            <div className="card-body">
+              <table className=" table ">
+                <thead>
+                <th>S.No</th>
+                </thead>
+
+                <tbody>
+                {data.length === 0 && <tr>  <td colSpan={5}> No Result Found!.</td>  </tr>}
+                </tbody>
+              </table>
+
+              <DataTablePagination
+                page={tableOptions.page}
+                pages={pageCount}
+                onPageChange={(p) => gotoPage(p)}
+                canPrevious={false}
+                canNext={false}
+              />
+
+            </div>
+          </div>
+        </Colxx>
+      </Row>
+
+      <AlertModal
+        title="Alert"
+        message="Are you sure you want to delete this item?"
+        confirmAction={deleteProduct}
+        toggleModal={toggleAlert}
+        modalOpen={alertOpen}
+      />
     </>
   );
 };
