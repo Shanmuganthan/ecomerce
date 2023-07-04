@@ -6,6 +6,10 @@ export const getData = (query) => {
     return Service.get(`${type}` ,   {params : {...query}} )
 }
 
+export const getDataById = (id) => {
+    return Service.get(`${type}/${id}`  )
+}
+
 export const postData = (data) => {
     return Service.post(`${type}`,data)
 }

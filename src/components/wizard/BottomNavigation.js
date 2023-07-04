@@ -11,6 +11,7 @@ const BottomNavigation = ({
   prevLabel,
   onClickNext,
   nextLabel,
+  dontDisableBtn
 }) => {
   return (
     <WithWizard
@@ -28,9 +29,7 @@ const BottomNavigation = ({
 
           <Button
             color="primary"
-            className={
-              steps.indexOf(step) >= steps.length - 1 ? 'disabled' : ''
-            }
+           
             onClick={() => {
               onClickNext(next, steps, step);
             }}

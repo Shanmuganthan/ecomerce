@@ -4,7 +4,7 @@ import { Wizard, Step, Steps } from 'react-albus';
 import { Card, CardBody } from 'reactstrap';
 import TopNavigation from 'components/wizard/TopNavigation';
 import BottomNavigation from 'components/wizard/BottomNavigation';
-import { postData } from 'services/Products';
+import { postData , getDataById ,putData } from 'services/Products';
 
 import BasicDetails from './Forms/BasicDetails';
 import SEOAndMarketingDetails from './Forms/SEOAndMarketingDetails';
@@ -15,10 +15,11 @@ const ProductForm = () => {
   const { id } = useParams();
   const history = useHistory();
   const [topNavDisabled] = useState(false);
+  const [productData,setProductData] = useState(()=>null);
   const [loading,setLoading] = useState(()=>false);
   const [bottomNavHidden, setBottomNavHidden] = useState(false);
   const [operations , setOperations ] = useState(() => 'A');
-  const forms = [createRef(null), createRef(null), createRef(null)];
+  const forms = [createRef(null), createRef(null), createRef(null),createRef(null)];
   const topNavClick = (stepItem, push) => {
     if (topNavDisabled) {
       return;
@@ -26,23 +27,32 @@ const ProductForm = () => {
     push(stepItem.id);
   };
 
+   const  getProductDetails = async() => {
+      let res = await getDataById(id);
+      res = res.data;
+      setProductData(res.data);
+   }
+
+   
+
   useEffect(() =>{
-    if(id)
+    if(id){
     setOperations('E')
+    getProductDetails()
+    }
     else
     setOperations('A')
   } ,[id])
 
   const onClickNext = (goToNext, steps, s) => {
     const step = s;
-    if (steps.length - 1 <= steps.indexOf(step)) {
-      return;
-    }
+ 
     const formIndex = steps.indexOf(step);
     const form = forms[formIndex].current;
  
 
 form.submitForm().then(async () => {
+  console.log(form)
       if (!form.isDirty && form.isValid) {
         const newFields = { ...form.values };
         setLoading(true);
@@ -51,21 +61,33 @@ form.submitForm().then(async () => {
           newFields.brand  = newFields.brand?.value;
           newFields.productCategory  = newFields.productCategory?.value;
           newFields.subCategory  = newFields.subCategory?.value;
-          
+        }
+
+        if(step.id === "Step4"){
+          newFields.technicalSpec = newFields.technicalSpec?.map((item) => ({ id : item.id?.value , value : item.value}))
+        }
+
           if(operations === 'A'){
              let res = await postData(newFields)
             res = res.data;
             history.push(`/app/product/update/${res?.data?.id}`);
 
+          }else{
+            await putData(id,newFields)
           }
-        }
+        
 
-        if (steps.length - 2 <= steps.indexOf(step)) {
+        if (steps.length - 3 <= steps.indexOf(step)) {
           // done
-          setBottomNavHidden(true);
+          setBottomNavHidden(false);
         }
         setLoading(false);
-        goToNext();
+        
+
+        if (steps.length - 1 <= steps.indexOf(step)) {
+          goToNext();
+        }
+
         step.isDone = true;
       }
     });
@@ -99,7 +121,7 @@ form.submitForm().then(async () => {
                 desc="Basic Details of the Product"
               >
                 <div className="wizard-basic-step">
-                  <BasicDetails ref={forms[0]} />
+                  <BasicDetails data={productData} operations={operations} ref={forms[0]} />
                 </div>
               </Step>
 
@@ -109,7 +131,7 @@ form.submitForm().then(async () => {
                 desc="SEO & Marketing Details"
               >
                 <div className="wizard-basic-step">
-                  <SEOAndMarketingDetails />
+                  <SEOAndMarketingDetails data={productData}  ref={forms[1]}/>
                 </div>
               </Step>
 
@@ -119,7 +141,7 @@ form.submitForm().then(async () => {
                 desc="Product Variant Details"
               >
                 <div className="wizard-basic-step">
-                  <ProductVariants />
+                  <ProductVariants data={productData}  ref={forms[2]} />
                 </div>
               </Step>
 
@@ -129,7 +151,7 @@ form.submitForm().then(async () => {
                 desc="Technical Specficiation Details"
               >
                 <div className="wizard-basic-step">
-                  <TechnicalSpecification />
+                  <TechnicalSpecification  data={productData } operations={operations}  ref={forms[3]}/>
                 </div>
               </Step>
             </Steps>
@@ -137,11 +159,12 @@ form.submitForm().then(async () => {
             <BottomNavigation
               onClickNext={onClickNext}
               onClickPrev={onClickPrev}
+              dontDisableBtn={false}
               className={`justify-content-between ${
                 bottomNavHidden && 'invisible'
               }`}
               prevLabel="Back"
-              nextLabel="Next"
+              nextLabel="Save"
             />
           </Wizard>
         </CardBody>

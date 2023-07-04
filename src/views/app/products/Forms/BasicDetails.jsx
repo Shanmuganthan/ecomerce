@@ -10,6 +10,8 @@ import { getLov as categoryLov } from 'services/Category';
 import { getLov as brandsLov } from 'services/Brands';
 import { getLov as productCategoryLov } from 'services/productCategory';
 import { getLov as  subCategory } from 'services/SubCategory';
+import ImagePreview from 'utility/ImagePreview';
+
 
 
 const formInitialValues = {
@@ -51,13 +53,22 @@ const schema = Yup.object().shape({
   isDraft: Yup.bool(),
 });
 
-const BasicDetails = forwardRef((props,ref) => {
-  // const formikRef = useRef();
+const BasicDetails = forwardRef(({data , operations},ref) => {
   const [options, setOptions] = useState(()=>({}));
+  const [formKey, setFormKey] = useState(0);
   const [originalOptions, setOrginalOptions] = useState(()=>({}));
-  const [initialValues] = useState(() => formInitialValues);
+  const [initialValues,setInitialValues] = useState(() => formInitialValues);
   // const [loading, setLoading] = useState(()=>true);
 
+  const copyObject = (source, destination) =>{
+    const result = {};
+    Object.keys(source).forEach(key => {
+      if (Object.prototype.hasOwnProperty.call(destination, key)) {
+        result[key] = source[key];
+      }
+    })
+    return result;
+  }
   
   const dropzone = useRef();
 
@@ -66,7 +77,6 @@ const BasicDetails = forwardRef((props,ref) => {
    res.map((item) => item.data).forEach((item) => {
     options[item.type] = item.data
    });
-   console.log(options)
    setOptions(options)
    setOrginalOptions({...options})
   }
@@ -75,6 +85,14 @@ const BasicDetails = forwardRef((props,ref) => {
     getMasterData();
   },[])
 
+
+   useEffect(()=>{
+    if(data != null){
+      const values = {...copyObject(data , initialValues)};
+      setInitialValues(values);
+        setFormKey(1)
+    }
+   },[data])
 
    const categoryChange = (name , value , setFieldValueCb,values) => {
     const val = values;
@@ -95,13 +113,14 @@ const BasicDetails = forwardRef((props,ref) => {
   return (
     <>
       <Formik
-        innerRef={ref}
+        key={formKey}
         enableReinitialize
+        innerRef={ref}
         initialValues={initialValues}
-        onSubmit={() => {}}
         validationSchema={schema}
+        onSubmit={() => {}}
       >
-        {({ errors, touched, values ,   setFieldValue,
+        {({ errors, touched, values , setFieldValue,
                 setFieldTouched }) => (
           <>
             <Form className="av-tooltip tooltip-label-bottom">
@@ -110,7 +129,9 @@ const BasicDetails = forwardRef((props,ref) => {
                 <div className="col-md-6">
                   <FormGroup className="form-group ">
                     <Label>Product Name</Label>
-                    <Field className="form-control" name="productName" />
+                    <Field className="form-control"
+                    value={values.productName}
+                    name="productName" />
                     {errors.productName && touched.productName && (
                       <div className="invalid-feedback d-block">
                         {errors.productName}
@@ -140,6 +161,8 @@ const BasicDetails = forwardRef((props,ref) => {
 
                   <FormGroup className="form-group ">
                     <Label>Product Thumb</Label>
+
+                    {operations !== 'A' &&  values.productThumb && <ImagePreview type="product-thumb" values={{name : values.productName ,  image : values.productThumb}}  /> }
                     <DropzoneExample type="product-thumb" maxFileSize={1} ref={dropzone}  name="productThumb" setFieldValue={setFieldValue} />
                     {errors.productThumb && touched.productThumb && (
                       <div className="invalid-feedback d-block">

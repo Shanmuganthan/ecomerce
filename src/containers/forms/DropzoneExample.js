@@ -11,7 +11,6 @@ export default class DropzoneExample extends Component {
   constructor(props) {
     super(props);
     const {type , maxFilesize} = this.props;
-    console.log(this.props)
     this.state = {
       dropzoneComponentConfig: {
         postUrl: `${process.env.REACT_APP_BE_END_POINT}upload/img/${type}`,
