@@ -5,6 +5,7 @@ import { Card, CardBody } from 'reactstrap';
 import TopNavigation from 'components/wizard/TopNavigation';
 import BottomNavigation from 'components/wizard/BottomNavigation';
 import { postData , getDataById ,putData } from 'services/Products';
+import { NotificationManager } from 'components/common/react-notifications';
 
 import BasicDetails from './Forms/BasicDetails';
 import SEOAndMarketingDetails from './Forms/SEOAndMarketingDetails';
@@ -52,7 +53,7 @@ const ProductForm = () => {
  
 
 form.submitForm().then(async () => {
-  console.log(form)
+  
       if (!form.isDirty && form.isValid) {
         const newFields = { ...form.values };
         setLoading(true);
@@ -71,9 +72,10 @@ form.submitForm().then(async () => {
              let res = await postData(newFields)
             res = res.data;
             history.push(`/app/product/update/${res?.data?.id}`);
-
+            NotificationManager.success('Created Successfully' , "Sucess")
           }else{
             await putData(id,newFields)
+            NotificationManager.success('Uptated Successfully' , "Sucess")
           }
         
 

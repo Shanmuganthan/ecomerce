@@ -17,18 +17,24 @@ const schema =  Yup.object().shape({
       }).nullable().required('This Field is required'),
       value: Yup.string().required('This Field is required'),
     })
-  ),
+  ).test('unique', 'Values must be unique', function (value) {
+    return new Set(value.id).size === value.length;
+  }),
 });
 const TechnicalSpecification = forwardRef(({data}, ref) => {
   const [formKey,setFormKey] = useState(()=>0);
   const [options, setOptions] = useState(()=>[]);
   const [techSpec ,setTechSpec] = useState(()=>[]);
   
+  const setInitialData = () => {
+    if(data){
+      setTechSpec(data?.technicalSpec);
+      setFormKey(prev=>prev+1)
+    }
+  }
+
   useEffect(()=>{
-      if(data){
-        setTechSpec(data?.technicalSpec);
-        setFormKey(prev=>prev+1)
-      }
+    setInitialData() 
   },[data])
 
   const getRow = () =>{
@@ -48,7 +54,7 @@ const TechnicalSpecification = forwardRef(({data}, ref) => {
     getTechSpec();
   },[])
 
-
+// {errors.technicalSpec && !Array.isArray(errors.technicalSpec) && NotificationManager.error(errors.technicalSpec, "Error")}
   return (
     <>
       <Formik
@@ -59,9 +65,10 @@ const TechnicalSpecification = forwardRef(({data}, ref) => {
         initialValues= {{technicalSpec : techSpec}}
         onSubmit={() => {}}
       >
-        {({ values , errors , touched ,  setFieldValue  , setFieldTouched}) => (
+        {({ values , errors , touched ,handleChange ,  setFieldValue  , setFieldTouched}) => (
           <>
-
+          
+             
             <Form  className="av-tooltip tooltip-label-bottom">
             <FieldArray name='technicalSpec'>
             {({ push, remove }) => ( <>
@@ -93,6 +100,7 @@ const TechnicalSpecification = forwardRef(({data}, ref) => {
                     <div className='col-md-4'>
                       <FormGroup className="form-group ">
                         <Field className="form-control" 
+                        onChange={handleChange}
                         name={`technicalSpec[${index}].value`}
                         value={values?.technicalSpec?.[index]?.value}
                         />

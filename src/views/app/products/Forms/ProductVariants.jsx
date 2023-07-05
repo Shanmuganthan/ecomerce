@@ -1,11 +1,12 @@
 import { Field, Formik } from 'formik';
-import React from 'react';
+import React , {forwardRef} from 'react';
 import { Form, FormGroup, Label } from 'reactstrap';
 
-const ProductVariants = () => {
+const ProductVariants = forwardRef((props,ref) => {
   return (
     <>
       <Formik
+        innerRef={ref}
         initialValues={{
           name: '',
         }}
@@ -28,6 +29,8 @@ const ProductVariants = () => {
       </Formik>
     </>
   );
-};
+});
+
+ProductVariants.displayName = "ProductVariants";
 
 export default ProductVariants;
