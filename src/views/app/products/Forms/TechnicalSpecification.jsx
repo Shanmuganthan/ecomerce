@@ -62,7 +62,7 @@ const TechnicalSpecification = forwardRef(({data}, ref) => {
         {({ values , errors , touched ,  setFieldValue  , setFieldTouched}) => (
           <>
 
-            <Form Form className="av-tooltip tooltip-label-bottom">
+            <Form  className="av-tooltip tooltip-label-bottom">
             <FieldArray name='technicalSpec'>
             {({ push, remove }) => ( <>
               <div className="col-md-12">

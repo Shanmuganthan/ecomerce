@@ -51,7 +51,7 @@ const SEOAndMarketingDetails = forwardRef(({ data }, ref) => {
         >
           {({ errors, touched }) => (
             <>
-              <Form Form className="av-tooltip tooltip-label-bottom">
+              <Form  className="av-tooltip tooltip-label-bottom">
                 <Row className="mb-4 col-md-12">
                   <div className="col-md-6">
                     <FormGroup className="form-group ">

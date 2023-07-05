@@ -13,7 +13,7 @@ const ProductVariants = () => {
       >
         {({ errors, touched }) => <>
         
-        <Form Form className="av-tooltip tooltip-label-bottom">
+        <Form  className="av-tooltip tooltip-label-bottom">
               <FormGroup className="form-group has-float-label">
                 <Label>
                   Product Name
