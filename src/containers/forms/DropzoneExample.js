@@ -70,7 +70,7 @@ export default class DropzoneExample extends Component {
 
   render() {
     const {dropzoneComponentConfig ,dropzoneConfig } = this.state;
-    const {setFieldValue , name='image'} = this.props;
+    const {setFieldValue , setFieldValueCb ,values, name='image'} = this.props;
   
     return (
       <DropzoneComponent
@@ -81,10 +81,18 @@ export default class DropzoneExample extends Component {
             this.myDropzone = dropzone;
           },
           success: (file) => {
-            setFieldValue?.(name ,file.name);
+            if(setFieldValueCb){
+              setFieldValueCb(name,file.name,'A',values)
+            }else{
+              setFieldValue?.(name ,file.name);
+            }  
           },
-          removedfile: () => {
+          removedfile: (file) => {
+            if(setFieldValueCb){
+              setFieldValueCb(name,file.name,'D',values)
+            }else{
             setFieldValue?.(name ,'');
+            }
           },
         }}
       />

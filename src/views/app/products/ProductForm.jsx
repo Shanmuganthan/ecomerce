@@ -64,6 +64,12 @@ form.submitForm().then(async () => {
           newFields.subCategory  = newFields.subCategory?.value;
         }
 
+        if(step.id === "Step3"){
+          delete newFields.fields;
+          newFields.productVariants = newFields.productVariants.map((item) => ({  ...item  , images  :  [... new Set(item.images)], variant : item.variant.value }))
+        }
+
+
         if(step.id === "Step4"){
           newFields.technicalSpec = newFields.technicalSpec?.map((item) => ({ id : item.id?.value , value : item.value}))
         }

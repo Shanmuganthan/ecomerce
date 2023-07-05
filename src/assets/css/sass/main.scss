@@ -70,3 +70,15 @@ cursor: pointer;
     content: '\e84e';
     font-family: "iconsminds";
 }
+
+
+
+.custom-preview.dropzone{
+    padding: 0px !important;
+    border: 0px !important;
+    min-height: 75px !important;
+}
+
+.display-inline{
+    display: inline;
+}

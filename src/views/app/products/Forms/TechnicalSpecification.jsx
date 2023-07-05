@@ -17,9 +17,10 @@ const schema =  Yup.object().shape({
       }).nullable().required('This Field is required'),
       value: Yup.string().required('This Field is required'),
     })
-  ).test('unique', 'Values must be unique', function (value) {
-    return new Set(value.id).size === value.length;
-  }),
+  )
+  // .test('unique', 'Values must be unique', function (value) {
+  //   return new Set(value.id).size === value.length;
+  // }),
 });
 const TechnicalSpecification = forwardRef(({data}, ref) => {
   const [formKey,setFormKey] = useState(()=>0);
@@ -67,8 +68,6 @@ const TechnicalSpecification = forwardRef(({data}, ref) => {
       >
         {({ values , errors , touched ,handleChange ,  setFieldValue  , setFieldTouched}) => (
           <>
-          
-             
             <Form  className="av-tooltip tooltip-label-bottom">
             <FieldArray name='technicalSpec'>
             {({ push, remove }) => ( <>
@@ -81,8 +80,8 @@ const TechnicalSpecification = forwardRef(({data}, ref) => {
                     <div className='col-md-2'> Actions</div>
                   </div>
                 
-               {values && values?.technicalSpec?.map((item,index) =>   <div className='row' key={uuidv4()}>
-                    <div className='col-md-2'>{index+1}</div>
+               {values && values?.technicalSpec?.map((item,index) =>   <div className='row' key={`PV-${item.id ? item?.id?.value : index+1}`}>
+                    <div className='col-md-2'>{index+1} </div>
                     <div className='col-md-4'>
                       <FormikReactSelect
                          name={`technicalSpec[${index}].id`}
