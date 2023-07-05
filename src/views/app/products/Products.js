@@ -11,10 +11,10 @@ import AlertModal from 'utility/AlertModal';
 
 
 
-// const sort = {
-//   1 : 'sort-asc',
-//   "-1" : 'sort-desc',
-// }
+const sort = {
+  1 : 'sort-asc',
+  "-1" : 'sort-desc',
+}
 const Products = ({ match }) => {
   const [data, setData] = useState([]);
   const [selectedItem, setSelectedItem] = useState(() => {});
@@ -77,15 +77,15 @@ const Products = ({ match }) => {
     get();
   };
 
-  // const sorting = (column) => {
-  //   tableOptions.getCount = false;
-  //   if (tableOptions.sort === column) {
-  //     tableOptions.direction = tableOptions.direction === -1 ? 1 : -1;
-  //   }
-  //   tableOptions.sort = column;
-  //   setTableOptions(tableOptions);
-  //   get();
-  // };
+  const sorting = (column) => {
+    tableOptions.getCount = false;
+    if (tableOptions.sort === column) {
+      tableOptions.direction = tableOptions.direction === -1 ? 1 : -1;
+    }
+    tableOptions.sort = column;
+    setTableOptions(tableOptions);
+    get();
+  };
   const gotoPage = (p) => {
     tableOptions.page = p;
     setTableOptions(tableOptions);
@@ -131,7 +131,7 @@ const Products = ({ match }) => {
                 to="/app/product/create"
                 color="primary"
                 size="lg"
-                className="top-right-button float-right"
+                className="top-right-button float-right btn btn-primary btn-lg"
               >
                 Add New Product
               </Link>
@@ -147,9 +147,30 @@ const Products = ({ match }) => {
               <table className=" table ">
                 <thead>
                 <th>S.No</th>
+                <th className={`sort-column ${tableOptions.sort === 'productName' ? sort[tableOptions.direction] :'' }`} onClick={()=>sorting('productName')}>Product Name</th>
+                <th className={`sort-column ${tableOptions.sort === 'brands.name' ? sort[tableOptions.direction] :'' }`} onClick={()=>sorting('brands.name')}>Manufacturer</th>
+                <th className={`sort-column ${tableOptions.sort === 'category.name' ? sort[tableOptions.direction] :'' }`} onClick={()=>sorting('category.name')}>Category</th>
+                <th className={`sort-column ${tableOptions.sort === 'subProductCategory.name' ? sort[tableOptions.direction] :'' }`} onClick={()=>sorting('subProductCategory.name')}>Sub Category</th>
+                <th>Action</th>
                 </thead>
 
                 <tbody>
+                {data.length > 0 && data.map((item,index) => <tr key={item.id}>
+               <td>{index+1}</td>
+               <td>{item.productName}</td>
+               <td>{item.brands?.name}</td>
+               <td>{item.category?.name}</td>
+               <td>{item.subProductCategory?.name}</td>
+               <td>
+               <Row>
+                                <button type="button" onClick={()=>toggleAlert(item)}  className="glyph-icon action-icons m-2 simple-icon-trash" />
+                                <Link  type="button" tabIndex="0" to={`/app/product/update/${item.id}`} className="glyph-icon action-icons m-2 simple-icon-pencil" />
+                                <Link type='button' tabIndex="0"to={`/app/product/update/${item.id}`} className="glyph-icon m-2 action-icons simple-icon-eye" />
+                              </Row>
+
+               </td>
+
+                </tr> )}
                 {data.length === 0 && <tr>  <td colSpan={5}> No Result Found!.</td>  </tr>}
                 </tbody>
               </table>

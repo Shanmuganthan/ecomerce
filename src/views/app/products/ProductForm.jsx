@@ -1,18 +1,19 @@
 import React , { useState ,useEffect, createRef} from 'react';
 import { useHistory,useParams } from 'react-router-dom';
 import { Wizard, Step, Steps } from 'react-albus';
-import { Card, CardBody } from 'reactstrap';
+import { Breadcrumb, Card, CardBody, Row } from 'reactstrap';
 import TopNavigation from 'components/wizard/TopNavigation';
 import BottomNavigation from 'components/wizard/BottomNavigation';
 import { postData , getDataById ,putData } from 'services/Products';
 import { NotificationManager } from 'components/common/react-notifications';
+import { Colxx, Separator   } from 'components/common/CustomBootstrap';
 
 import BasicDetails from './Forms/BasicDetails';
 import SEOAndMarketingDetails from './Forms/SEOAndMarketingDetails';
 import ProductVariants from './Forms/ProductVariants';
 import TechnicalSpecification from './Forms/TechnicalSpecification';
 
-const ProductForm = () => {
+const ProductForm = ({match}) => {
   const { id } = useParams();
   const history = useHistory();
   const [topNavDisabled] = useState(false);
@@ -111,6 +112,16 @@ form.submitForm().then(async () => {
 
   return (
     <>
+
+
+      <Row>
+        <Colxx xxs="12">
+          <Breadcrumb heading="menu.products" match={match} />
+          <Separator className="mb-5" />
+        </Colxx>
+      </Row>
+        {loading && <div className="loading" />}
+
       <Card>
         <CardBody className="wizard wizard-default">
         <Wizard>
