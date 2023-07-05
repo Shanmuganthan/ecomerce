@@ -1,6 +1,6 @@
 import { FormikReactSelect } from 'containers/form-validations/FormikFields';
 import { Field, Form,FieldArray, Formik } from 'formik';
-import React, { useState , forwardRef} from 'react';
+import React, { useState , forwardRef, useEffect} from 'react';
 import { Button,  FormGroup,  Row } from 'reactstrap';
 import { getLov } from 'services/TechnicalSpecification';
 import { v4 as uuidv4 } from 'uuid';
@@ -19,10 +19,17 @@ const schema =  Yup.object().shape({
     })
   ),
 });
-const TechnicalSpecification = forwardRef((props, ref) => {
-  const [formKey] = useState(()=>0);
+const TechnicalSpecification = forwardRef(({data}, ref) => {
+  const [formKey,setFormKey] = useState(()=>0);
   const [options, setOptions] = useState(()=>[]);
+  const [techSpec ,setTechSpec] = useState(()=>[]);
   
+  useEffect(()=>{
+      if(data){
+        setTechSpec(data?.technicalSpec);
+        setFormKey(prev=>prev+1)
+      }
+  },[data])
 
   const getRow = () =>{
      const row = singleRow;
@@ -42,58 +49,59 @@ const TechnicalSpecification = forwardRef((props, ref) => {
   },[])
 
 
-
   return (
     <>
       <Formik
       innerRef={ref}
       key={formKey}
+      enableReinitialize ={false}
       validationSchema={schema}
-        initialValues= {{technicalSpec : []}}
+        initialValues= {{technicalSpec : techSpec}}
         onSubmit={() => {}}
       >
-        {({ values , errors ,  setFieldValue  , setFieldTouched}) => (
+        {({ values , errors , touched ,  setFieldValue  , setFieldTouched}) => (
           <>
-          {console.log(errors)}
+
             <Form Form className="av-tooltip tooltip-label-bottom">
             <FieldArray name='technicalSpec'>
             {({ push, remove }) => ( <>
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>S.No</th>
-                    <th>Specification</th>
-                    <th>Values</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-               {values && values?.technicalSpec?.map((item,index) =>   <tr key={item.id}>
-                    <td>{index+1}</td>
-                    <td>
+              <div className="col-md-12">
+                
+                  <div className='row'>
+                    <div className='col-md-2'>S.No</div>
+                    <div className='col-md-4'>Specification</div>
+                    <div className='col-md-4'> Values</div>
+                    <div className='col-md-2'> Actions</div>
+                  </div>
+                
+               {values && values?.technicalSpec?.map((item,index) =>   <div className='row' key={uuidv4()}>
+                    <div className='col-md-2'>{index+1}</div>
+                    <div className='col-md-4'>
                       <FormikReactSelect
                          name={`technicalSpec[${index}].id`}
                         id={`technicalSpec[${index}].id`}
                         options={options}
+                        value={values?.technicalSpec?.[index]?.id}
                         onChange={setFieldValue}
                         // onChange={(_,value) => setFieldTouchedCb(value,index , 'techSpech' , values)}
                         onBlur={setFieldTouched}
                       />
-                      {errors?.technicalSpec?.[index]?.id && <div className="invalid-feedback d-block">
+                      {errors?.technicalSpec?.[index]?.id &&  touched?.technicalSpec?.[index]?.id && <span className="invalid-feedback d-block">
                        {errors?.technicalSpec?.[index]?.id}
-                      </div>}
-                    </td>
-                    <td>
+                      </span>}
+                    </div>
+                    <div className='col-md-4'>
                       <FormGroup className="form-group ">
                         <Field className="form-control" 
-                         name={`technicalSpec[${index}].value`}
+                        name={`technicalSpec[${index}].value`}
+                        value={values?.technicalSpec?.[index]?.value}
                         />
-                     {errors?.technicalSpec?.[index]?.value && <div className="invalid-feedback d-block">
+                     {errors?.technicalSpec?.[index]?.value && touched?.technicalSpec?.[index]?.value && <div className="invalid-feedback d-block">
                        {errors?.technicalSpec?.[index]?.value}
                       </div>}
                       </FormGroup>
-                    </td>
-                    <td>
+                    </div>
+                    <div className='col-md-2'>
                       <Row>
                         <button
                           type="button"
@@ -101,10 +109,9 @@ const TechnicalSpecification = forwardRef((props, ref) => {
                           onClick={() => remove(index)}
                         />
                       </Row>
-                    </td>
-                  </tr>)}
-                </tbody>
-              </table>
+                    </div>
+                  </div>)}
+                </div>
                <div className='row'>
                <div className=" col-md-12 mb-5">
                  <Button
