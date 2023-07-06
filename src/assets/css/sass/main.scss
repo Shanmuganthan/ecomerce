@@ -82,3 +82,14 @@ cursor: pointer;
 .display-inline{
     display: inline;
 }
+.profile_image{
+    padding: 7px 15px;
+    background-color: $theme-color-purple-monster;
+    border-radius: 15px;
+    border-radius: 50%;
+    height: 32px;
+    width: 32px;
+    font-weight: 600;
+    font-size: 18px;
+    color: #fff;
+}

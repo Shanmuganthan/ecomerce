@@ -152,14 +152,15 @@ module.exports = {
    'menu.config' : 'Config',
    'menu.master' : 'Master',
    'menu.brand' : 'Brand',
-   'menu.brands' : 'Brand',
-   'menu.category' : 'Category',
-   'menu.product-category' : 'Product Category',
-   'menu.sub-category' : 'Sub Category',
-   'menu.technical-specification' : 'Technical Specification',
-   'menu.colors-specification' : 'Color Specification',
-   'menu.color-specification' : 'Color Specification',
+   'menu.brands' : 'Brands',
+   'menu.category' : 'Categories',
+   'menu.product-category' : 'Product Categories',
+   'menu.sub-category' : 'Sub Categories',
+   'menu.technical-specification' : ' Specification',
+   'menu.colors-specification' : ' Configuations',
+   'menu.color-specification' : ' Configuations',
    'menu.products' : 'Products',
+   'menu.promotions' : 'Promotions',
 
 
   /* 04.Dashboards */

@@ -12,6 +12,10 @@ const Dashboards = React.lazy(() =>
 const ProductApp = React.lazy(() =>
   import(/* webpackChunkName: "products" */ './products')
 );
+
+const PromotionsApp = React.lazy(() =>
+  import(/* webpackChunkName: "products" */ './promotions')
+);
 const App = ({ match }) => {
   return (
     <AppLayout>
@@ -30,6 +34,10 @@ const App = ({ match }) => {
             <Route
               path={`${match.url}/product`}
               render={(props) => <ProductApp {...props} />}
+            />
+              <Route
+              path={`${match.url}/promotions`}
+              render={(props) => <PromotionsApp {...props} />}
             />
             <Redirect to="/error" />
           </Switch>

@@ -4,9 +4,8 @@ import { Colxx, Separator } from 'components/common/CustomBootstrap';
 import Breadcrumb from 'containers/navs/Breadcrumb';
 import {  Row } from 'reactstrap';
 import { NotificationManager } from 'components/common/react-notifications';
-import { getData } from 'services/Products';
+import { getData ,patchData} from 'services/Products';
 import DataTablePagination from 'components/DatatablePagination';
-import { patchData } from 'services/Brands';
 import AlertModal from 'utility/AlertModal';
 
 
