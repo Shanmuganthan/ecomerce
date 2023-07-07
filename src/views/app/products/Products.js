@@ -145,12 +145,14 @@ const Products = ({ match }) => {
             <div className="card-body">
               <table className=" table ">
                 <thead>
+                  <tr>
                 <th>S.No</th>
                 <th className={`sort-column ${tableOptions.sort === 'productName' ? sort[tableOptions.direction] :'' }`} onClick={()=>sorting('productName')}>Product Name</th>
                 <th className={`sort-column ${tableOptions.sort === 'brands.name' ? sort[tableOptions.direction] :'' }`} onClick={()=>sorting('brands.name')}>Manufacturer</th>
                 <th className={`sort-column ${tableOptions.sort === 'category.name' ? sort[tableOptions.direction] :'' }`} onClick={()=>sorting('category.name')}>Category</th>
                 <th className={`sort-column ${tableOptions.sort === 'subProductCategory.name' ? sort[tableOptions.direction] :'' }`} onClick={()=>sorting('subProductCategory.name')}>Sub Category</th>
                 <th>Action</th>
+                </tr>
                 </thead>
 
                 <tbody>
@@ -160,9 +162,8 @@ const Products = ({ match }) => {
                <td>{item.brands?.name}</td>
                <td>{item.category?.name}</td>
                <td>{item.subProductCategory?.name}</td>
-               <td>
-               <Row>
-                                <button type="button" onClick={()=>toggleAlert(item)}  className="glyph-icon action-icons m-2 simple-icon-trash" />
+               <td><Row>
+                        <button type="button" onClick={()=>toggleAlert(item)}  className="glyph-icon action-icons m-2 simple-icon-trash" />
                                 <Link  type="button" tabIndex="0" to={`/app/product/update/${item.id}`} className="glyph-icon action-icons m-2 simple-icon-pencil" />
                                 <Link type='button' tabIndex="0"to={`/app/product/update/${item.id}`} className="glyph-icon m-2 action-icons simple-icon-eye" />
                               </Row>
@@ -170,7 +171,7 @@ const Products = ({ match }) => {
                </td>
 
                 </tr> )}
-                {data.length === 0 && <tr>  <td colSpan={5}> No Result Found!.</td>  </tr>}
+                {data.length === 0 && <tr><td colSpan={5}> No Result Found!.</td></tr>}
                 </tbody>
               </table>
 

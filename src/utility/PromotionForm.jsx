@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect , useState } from 'react';
 import { Field, Form } from 'formik';
 import { FormGroup, Row } from 'reactstrap';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Colxx } from 'components/common/CustomBootstrap';
-import { FormikRadioButtonGroup } from 'containers/form-validations/FormikFields';
+import { FormikRadioButtonGroup, FormikReactSelect } from 'containers/form-validations/FormikFields';
+import { getLov } from 'services/SubCategory';
 
 const options = [
   { value: 'percentage', label: 'Percentage' },
@@ -12,7 +13,17 @@ const options = [
 ]
 
 const PromotionForm = ({ touched, values, setFieldTouched,setFieldValue, errors }) => {
-  console.log(values)
+  const [subCategories, setSubCategories] = useState(()=>[]);
+  const getLovList = async() => {
+    let res = await getLov();
+    res=res.data;
+    setSubCategories(res.data)
+  }
+
+  useEffect(()=>{
+    getLovList();
+  },[])
+
   return (
     <>
       <Form className="av-tooltip tooltip-label-right">
@@ -102,6 +113,20 @@ const PromotionForm = ({ touched, values, setFieldTouched,setFieldValue, errors 
               <div className="invalid-feedback d-block">{errors.discountValue}</div>
             )}
         </FormGroup>
+
+        <FormGroup className="error-l-75">
+        <div>Sub Categories*(If None is selected promotion will apply to allthe products)</div>
+         <FormikReactSelect
+                      name="subCategories"
+                      id="subCategories"
+                      value={values.subCategories}
+                      isMulti
+                      options={subCategories}
+                      onChange={setFieldValue}
+                      onBlur={setFieldTouched}
+                    />
+           </FormGroup>
+
       </Form>
     </>
   );

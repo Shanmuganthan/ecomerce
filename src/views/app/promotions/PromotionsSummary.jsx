@@ -17,9 +17,13 @@ const schema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
   discountType: Yup.string().required('Discount Type is required'),
   discountValue: Yup.number().positive().required('Discount Value is required'),
-  startDate: Yup.date().default(null).required('Discount Value is required'),
+  startDate: Yup.date().default(null).required('Discount Value is re  quired'),
   endDate: Yup.date().default(null).required('Discount Value is required'),
-
+  subCategories : Yup.array().of(Yup.object().shape({
+    label: Yup.string().required(),
+    value: Yup.string().required(),
+  }))
+  
 });
 
 const title= {
@@ -40,6 +44,7 @@ const formInitialValues = {
     discountType : '',
     discountValue : '',
     active: true,
+    subCategories: []
 }
 const PromotionSymmary = ({ match }) => {
   const [data, setData] = useState([]);
@@ -106,8 +111,10 @@ const PromotionSymmary = ({ match }) => {
     setTableOptions(tableOptions)
   }, []);
 
-  const onSubmit = async (values , {resetForm}) => {
+  const onSubmit = async (val , {resetForm}) => {
+    const values = val;
     setLoading(true);
+    values.subCategories = values.subCategories?.map((item) => item.value);
     if(operations === 'A'){
     await postData(values)
     NotificationManager.success(`New ${type} has been added!`,'Success!')
@@ -123,16 +130,16 @@ const PromotionSymmary = ({ match }) => {
    }
 
 
-  //  const eitAndView = (slug , currentRow) =>{
-  //  const item = currentRow
-  //  item.startDate= format(new Date(item.startDate), "dd/MM/yyyy HH:mm");
-  //  item.endDate= format(new Date(item.endDate), "dd/MM/yyyy HH:mm");
+   const eitAndView = (slug , currentRow) =>{
+   const item = currentRow
+   item.startDate= new Date(currentRow.startDate);
+   item.endDate= new Date(currentRow.endDate);
 
-  //   setInitialValue(item);
-  //   setSelectedItem(item);
-  //   setOperations(slug);
-  //   setModalOpen((prevState) => !prevState);
-  //  }
+    setInitialValue(item);
+    setSelectedItem(item);
+    setOperations(slug);
+    setModalOpen((prevState) => !prevState);
+   }
 
    const deleteProduct = async() => {
     await patchData(selectedItem.id)
@@ -202,8 +209,7 @@ const gotoPage = (p) => {
                 <div className="card-body">
                   <table className=" table ">
                     <thead>
-                      <tr>
-                        <th>S.No</th>
+                      <tr><th>S.No</th>
                         <th className={`sort-column ${tableOptions.sort === 'name' ? sort[tableOptions.direction] :'' }`} onClick={()=>sorting('name')}>Name</th>
                         <th className={`sort-column ${tableOptions.sort === 'description' ? sort[tableOptions.direction] :'' }`} onClick={()=>sorting('description')}>Description</th>
                         <th className={`sort-column ${tableOptions.sort === 'startDate' ? sort[tableOptions.direction] :'' }`} onClick={()=>sorting('startDate')}>Start Date</th>
@@ -217,17 +223,14 @@ const gotoPage = (p) => {
                     <tbody>
                     {data.length === 0 && <tr>  <td colSpan={5}> No Result Found!.</td>  </tr>}
                       {data.length > 0 &&
-                        data.map((item, index) => (
-                          <tr key={item.name}>
-                            <td>{index + 1}</td>
+                        data.map((item, index) => (<tr key={item.name}><td>{index + 1}</td>
                             <td>{item.name}</td>
                             <td>{item.description}</td>
-                            <td>{item.startDate}</td>
-                            <td>{item.endDate}</td>
+                            <td>{item.startDateFormatted}</td>
+                            <td>{item.endDateFormatted}</td>
                             <td>{item.discountType?.toUpperCase()}</td>
                             <td>{item.discountValue}</td>
                             <td>
-                              {' '}
                               <span
                                 className={`badge  badge-pill  ${
                                   item.active
@@ -235,15 +238,14 @@ const gotoPage = (p) => {
                                     : ' badge-danger'
                                 } `}
                               >
-                                {' '}
                                 {item.active ? 'Active' : 'In-Active'}
                               </span>
                             </td>
                             <td className="float-right">
                               <Row>
                                 <button type="button" onClick={()=>toggleAlert(item)}  className="glyph-icon action-icons m-2 simple-icon-trash" />
-                                {/* <button  type="button" tabIndex="0" onClick={()=>eitAndView('E' , item)} className="glyph-icon action-icons m-2 simple-icon-pencil" />
-                                <button type='button' tabIndex="0" onClick={()=>eitAndView('V' , item)} className="glyph-icon m-2 action-icons simple-icon-eye" /> */}
+                                 <button  type="button" tabIndex="0" onClick={()=>eitAndView('E' , item)} className="glyph-icon action-icons m-2 simple-icon-pencil" />
+                                <button type='button' tabIndex="0" onClick={()=>eitAndView('V' , item)} className="glyph-icon m-2 action-icons simple-icon-eye" /> 
                               </Row>
                             </td>
                           </tr>
