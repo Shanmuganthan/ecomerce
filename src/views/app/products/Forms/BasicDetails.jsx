@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect, forwardRef } from 'react';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { FormGroup, Label, Row } from 'reactstrap';
+import ReactQuill from 'react-quill';
+
 import { FormikCustomCheckbox, FormikReactSelect } from 'containers/form-validations/FormikFields';
 import { Colxx } from 'components/common/CustomBootstrap';
 import DropzoneExample from 'containers/forms/DropzoneExample';
@@ -12,7 +14,9 @@ import { getLov as productCategoryLov } from 'services/productCategory';
 import { getLov as  subCategory } from 'services/SubCategory';
 import ImagePreview from 'utility/ImagePreview';
 
-
+import 'react-quill/dist/quill.snow.css';
+import 'react-quill/dist/quill.bubble.css';
+import { quillFormats, quillModules } from 'constants/defaultValues';
 
 const formInitialValues = {
   productName: '',
@@ -28,6 +32,8 @@ const formInitialValues = {
   isDraft: true,
   isFeatureProduct: true,
 };
+
+
 
 const schema = Yup.object().shape({
   productName: Yup.string().required('Product Name is required'),
@@ -151,7 +157,17 @@ const BasicDetails = forwardRef(({data , operations},ref) => {
 
                   <FormGroup className="form-group ">
                     <Label>Product Description</Label>
-                    <Field className="form-control"    component="textarea" name="productDesc" />
+                    {/* <Field className="form-control"    component="textarea" name="productDesc" /> */}
+
+                    <ReactQuill
+                theme="snow"
+                value={values.productDesc}
+                onChange={(val) => setFieldValue("productDesc",val)}
+                modules={quillModules}
+                formats={quillFormats}
+              />
+
+
                     {errors.productDesc && touched.productDesc && (
                       <div className="invalid-feedback d-block">
                         {errors.productDesc}
