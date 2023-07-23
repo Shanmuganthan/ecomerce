@@ -7,6 +7,8 @@ import { NotificationManager } from 'components/common/react-notifications';
 import { getData ,patchData} from 'services/Products';
 import DataTablePagination from 'components/DatatablePagination';
 import AlertModal from 'utility/AlertModal';
+import CustomModal from 'utility/CustomModal';
+import PromotionLists from './Forms/PromotionLists';
 
 
 
@@ -21,6 +23,7 @@ const Products = ({ match }) => {
 
   const [alertOpen, setAlertOpen] = useState(() => false);
   const [pageCount, setPageCount] = useState(0);
+  const [promotions , setPromotions] = useState(()=>[])
   const [tableOptions, setTableOptions] = useState(() => ({
     search: '',
     page: 0,
@@ -28,6 +31,8 @@ const Products = ({ match }) => {
     direction: 1,
     getCount: true,
   }));
+
+  const [modalOpen, setModalOpen] = useState(() => false);
 
   const search = (e) => {
     tableOptions.search = e.target.value;
@@ -89,6 +94,12 @@ const Products = ({ match }) => {
     tableOptions.page = p;
     setTableOptions(tableOptions);
     get();
+  };
+
+
+  const toggleModal = (promotion) => {
+    setPromotions(promotion);
+    setModalOpen((prevState) => !prevState);
   };
 
   return (
@@ -164,6 +175,7 @@ const Products = ({ match }) => {
                <td>{item.subProductCategory?.name}</td>
                <td><Row>
                         <button type="button" onClick={()=>toggleAlert(item)}  className="glyph-icon action-icons m-2 simple-icon-trash" />
+                        {Boolean(item.promotions?.length) && <button type="button" onClick={()=>toggleModal(item.promotions)}  className="glyph-icon action-icons m-2 iconsminds-gift-box" /> }
                                 <Link  type="button" tabIndex="0" to={`/app/product/update/${item.id}`} className="glyph-icon action-icons m-2 simple-icon-pencil" />
                                 <Link type='button' tabIndex="0"to={`/app/product/update/${item.id}`} className="glyph-icon m-2 action-icons simple-icon-eye" />
                               </Row>
@@ -187,6 +199,18 @@ const Products = ({ match }) => {
           </div>
         </Colxx>
       </Row>
+
+
+      <CustomModal
+            hideSaveBtn = "true"
+            title="Promotions"
+            toggleModal={toggleModal}
+            modalOpen={modalOpen}
+            wrapClassName="modal-right"
+            
+          >
+           { Boolean(promotions.length) &&  promotions.map((item) => <React.Fragment key={item.name}> <PromotionLists  promotion={item}/> </React.Fragment>)}
+            </CustomModal>
 
       <AlertModal
         title="Alert"

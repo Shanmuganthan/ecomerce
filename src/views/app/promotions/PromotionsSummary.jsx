@@ -15,6 +15,7 @@ import PromotionForm from 'utility/PromotionForm';
 const schema = Yup.object().shape({
   description: Yup.string().required('Description is required'),
   name: Yup.string().required('Name is required'),
+  priotityValue: Yup.number(),
   discountType: Yup.string().required('Discount Type is required'),
   discountValue: Yup.number().positive().required('Discount Value is required'),
   startDate: Yup.date().default(null).required('Discount Value is re  quired'),
@@ -44,6 +45,7 @@ const formInitialValues = {
     discountType : '',
     discountValue : '',
     active: true,
+    priotityValue : 0,
     subCategories: []
 }
 const PromotionSymmary = ({ match }) => {
@@ -216,6 +218,8 @@ const gotoPage = (p) => {
                         <th className={`sort-column ${tableOptions.sort === 'endDate' ? sort[tableOptions.direction] :'' }`} onClick={()=>sorting('endDate')}>End Date</th>
                         <th className={`sort-column ${tableOptions.sort === 'discountType' ? sort[tableOptions.direction] :'' }`} onClick={()=>sorting('discountType')}>Discount Type</th>
                         <th className={`sort-column ${tableOptions.sort === 'discountValue' ? sort[tableOptions.direction] :'' }`} onClick={()=>sorting('discountValue')}>Discount Value</th>
+                        <th>Priotity </th>
+                        <th>Expired</th>
                         <th>Status</th>
                         <th className="text-right">Action</th>
                       </tr>
@@ -230,6 +234,18 @@ const gotoPage = (p) => {
                             <td>{item.endDateFormatted}</td>
                             <td>{item.discountType?.toUpperCase()}</td>
                             <td>{item.discountValue}</td>
+                            <td>{item.priotityValue}</td>
+                            <td>
+                              <span
+                                className={`badge  badge-pill  ${
+                                  !item.isExpired
+                                    ? 'badge-success '
+                                    : ' badge-danger'
+                                } `}
+                              >
+                                {item.isExpired ? 'Expired' : 'Active'}
+                              </span>
+                            </td>
                             <td>
                               <span
                                 className={`badge  badge-pill  ${
@@ -241,6 +257,7 @@ const gotoPage = (p) => {
                                 {item.active ? 'Active' : 'In-Active'}
                               </span>
                             </td>
+                            
                             <td className="float-right">
                               <Row>
                                 <button type="button" onClick={()=>toggleAlert(item)}  className="glyph-icon action-icons m-2 simple-icon-trash" />

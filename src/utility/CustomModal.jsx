@@ -16,7 +16,7 @@ const CustomModal = ({ wrapClassName='',hideSaveBtn = false, modalOpen, toggleMo
       backdrop="static"
     >
       <ModalHeader toggle={toggleModal}>
-        <div> {title} {hideSaveBtn}  </div>
+        <div> {title}  </div>
       </ModalHeader>
       <ModalBody>
       {children}

@@ -113,6 +113,10 @@ const PromotionForm = ({ touched, values, setFieldTouched,setFieldValue, errors 
               <div className="invalid-feedback d-block">{errors.discountValue}</div>
             )}
         </FormGroup>
+        <FormGroup className="error-l-75">
+          <div>Priotity </div>
+          <Field className="form-control" name="priotityValue" />
+        </FormGroup>
 
         <FormGroup className="error-l-75">
         <div>Sub Categories*(If None is selected promotion will apply to allthe products)</div>

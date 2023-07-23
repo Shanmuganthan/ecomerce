@@ -8,11 +8,13 @@ const formInitialValues = {
   metaTitle: '',
   metaDesc: '',
   metaKeywords: '',
+  canonicalURL : ''
 };
 
 const schema = Yup.object().shape({
   metaTitle: Yup.string().required('Meta Tile is required'),
   metaDesc: Yup.string().required('Meta Description is required'),
+  canonicalURL: Yup.string(),
   metaKeywords: Yup.string().required('Meta keywords are required'),
 });
 
@@ -84,6 +86,12 @@ const SEOAndMarketingDetails = forwardRef(({ data }, ref) => {
                           {errors.metaDesc}
                         </div>
                       )}
+                    </FormGroup>
+                  </div>
+                  <div className="col-md-6">
+                    <FormGroup className="form-group ">
+                      <Label>Canonical URL</Label>
+                      <Field className="form-control" name="canonicalURL" />
                     </FormGroup>
                   </div>
                 </Row>
